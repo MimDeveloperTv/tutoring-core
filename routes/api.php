@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MedicalFormController;
 use App\Http\Controllers\User\UserPatientController;
 use App\Http\Controllers\User\UserOperatorController;
-use App\Http\Controllers\User\UserPersonnelController;
 use App\Http\Controllers\Patient\MedicalHistoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AppointmentController;
@@ -56,9 +55,6 @@ Route::post('user/{id}/patient',[UserPatientController::class,'store']);
 
 Route::get('user/{id}/operator',[UserOperatorController::class,'show']);
 Route::post('user/{id}/operator',[UserOperatorController::class,'store']);
-
-Route::get('user/{id}/personnel',[UserPersonnelController::class,'show']);
-Route::post('user/{id}/personnel',[UserPersonnelController::class,'store']);
 
 Route::get('appointments',[AppointmentController::class,'index']);
 Route::patch('appointments/{id}/payment-status',[AppointmentController::class,'updatePaymentStatus']);
