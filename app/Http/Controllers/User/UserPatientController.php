@@ -31,9 +31,10 @@ class UserPatientController extends Controller
          return $this->response();
     }
 
-    public function store(Request $request)
+    public function store(Request $request,$id)
     {
-        $patient = $this->patientService->new($request->user_id);
+        $userId = $id;
+        $patient = $this->patientService->new($userId);
         if($patient)
         {
             $this->setData(new PatientResource($patient));

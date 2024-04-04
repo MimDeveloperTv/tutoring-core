@@ -32,9 +32,10 @@ class UserOperatorController extends Controller
         return $this->response();
     }
 
-    public function store(Request $request,$user_id)
+    public function store(Request $request,$id)
     {
-        $operator = $this->operatorService->new($user_id);
+        $userId = $id;
+        $operator = $this->operatorService->new($userId);
         if($operator)
         {
             $this->setData(new OperatorResource($operator));
