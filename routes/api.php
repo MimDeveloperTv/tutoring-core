@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\ConnectionController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\User\PatientController;
 use App\Http\Controllers\User\OperatorController;
 use App\Http\Resources\OperatorCollection;
@@ -40,15 +41,9 @@ Route::get('dashboard',[DashboardController::class,'index']);
 
 Route::apiResource('patients', PatientController::class);
 
-Route::get('/personnels', function () {
-    $personnels = Personnel::all();
-    return response()->json(OperatorCollection::collection($personnels));
-});
+Route::get('/personnel',[PersonnelController::class,'index']);
+Route::get('/personnel/{id}',[PersonnelController::class,'show']);
 
-Route::get('/personnels/{id}', function ($id) {
-    $personnel = Personnel::find($id);
-    return response()->json(['personnel' => new PatientResource($personnel)]);
-});
 
 Route::get('user/{id}/patient',[UserPatientController::class,'show']);
 Route::post('user/{id}/patient',[UserPatientController::class,'store']);
@@ -76,11 +71,9 @@ Route::get('medical-forms',[MedicalFormController::class,'index']);
 Route::get('medical-forms/{id}',[MedicalFormController::class,'show']);
 Route::put('medical-forms/{id}',[MedicalFormController::class,'submit']);
 Route::patch('medical-forms/{id}',[MedicalFormController::class,'draft']);
-
 Route::post('upload-medicine-files',[\App\Http\Controllers\Imaging\FileUploaderController::class,'store']);
 
 //  Route::post('operators',function(Request $request){
-
 //     $user = User::create([
 //         'national_code' => $request->national_code,
 //         'email' => $request->email,
@@ -95,9 +88,4 @@ Route::post('upload-medicine-files',[\App\Http\Controllers\Imaging\FileUploaderC
 //      new OperatorCreatedEvent($operator->id);
 //      return $operator;
 //  });
-
-
-Route::get('test', function () {
-    return 'test';
-});
 
