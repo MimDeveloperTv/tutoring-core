@@ -5,9 +5,6 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\PersonnelController;
 use App\Http\Controllers\User\PatientController;
 use App\Http\Controllers\User\OperatorController;
-use App\Http\Resources\OperatorCollection;
-use App\Http\Resources\PatientResource;
-use App\Models\Personnel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MedicalFormController;
@@ -39,19 +36,24 @@ Route::get('/get-domain-connection', [ConnectionController::class,'getConnection
 
 Route::get('dashboard',[DashboardController::class,'index']);
 
-Route::apiResource('patients', PatientController::class);
+
 
 Route::get('/personnel',[PersonnelController::class,'index']);
 Route::get('/personnel/{id}',[PersonnelController::class,'show']);
 
 
 Route::get('user/{id}/patient',[UserPatientController::class,'show']);
+
+Route::apiResource('patients', PatientController::class);
 Route::post('user/{id}/patient',[UserPatientController::class,'store']);
+
 
 Route::get('user/{id}/operator',[UserOperatorController::class,'show']);
 Route::post('user/{id}/operator',[UserOperatorController::class,'store']);
 
 Route::get('appointments',[AppointmentController::class,'index']);
+
+
 Route::patch('appointments/{id}/payment-status',[AppointmentController::class,'updatePaymentStatus']);
 Route::patch('appointments/{id}/status',[AppointmentController::class,'updateStatus']);
 

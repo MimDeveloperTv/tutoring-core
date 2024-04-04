@@ -16,6 +16,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Symfony\Component\HttpFoundation\Response as ResponseAlias;
 use App\Lib\Http\Request as CustomRequest;
 
@@ -50,7 +51,7 @@ class PatientController extends Controller
 
     public function store(PatientRequest $request)
     {
-     
+
         // try {
             $user = $this->userService->findOrCreateByNationalCode(new UserDTO(
                 $request->national_code,
@@ -74,15 +75,16 @@ class PatientController extends Controller
 //                    'national_code' => 'A patient with this national ID has already been registered'
 //                ]);
 
-            \Log::debug(config("services.iam.api_key"));
-                    
+
+
             $booking_patient_response = CustomRequest::post([
                 'api-key' => config("services.iam.api_key"),
             ], [
                 'user_id' => $user->id,
                 'fullname' => $user->firstname . " " . $user->lastname,
             ], 'booking', '/collections/consumers');
-            
+
+        Log::debug($booking_patient_response->body());
         // } catch (\Throwable $th) {
         //     $this->setStatus(400);
         //     $this->setErrors($th->getMessage());
@@ -92,7 +94,7 @@ class PatientController extends Controller
         $this->setStatus($booking_patient_response->status());
         if ($booking_patient_response->status() == 201) {
             $booking_patient_id = json_decode($booking_patient_response->body())->data->id;
-          
+
             DB::transaction(function () use ($user, $booking_patient_id) {
                 $patient = Patient::create([
                     'id' => $booking_patient_id,
