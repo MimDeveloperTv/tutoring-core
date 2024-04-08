@@ -66,7 +66,8 @@ class OperatorController extends Controller
                 $request->avatar,
                 $request->firstname,
                 $request->lastname,
-                $request->birth_date
+                $request->birth_date,
+                $request->user_collection_id
             ));
 
             $operator = Operator::where('user_id', $user->id)->first();

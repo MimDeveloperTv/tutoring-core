@@ -24,6 +24,7 @@ class UserSeeder extends Seeder
             //admin
             $user = User::create([
                 'national_code' => '5555555555',
+                'user_collection_id' => '84b15c1f-7f0e-411e-9a0c-d5626653b751',
                 'mobile' => 1111111111,
                 'password' => '00000000',
                 'firstname' => 'admin',
@@ -39,6 +40,7 @@ class UserSeeder extends Seeder
             //user for patient
             $user = User::create([
                 'national_code' => '0000000000',
+                'user_collection_id' => '84b15c1f-7f0e-411e-9a0c-d5626653b751',
                 'mobile' => 9369422072,
                 'password' => '00000000',
                 'firstname' => 'patient',
@@ -57,6 +59,7 @@ class UserSeeder extends Seeder
             // user for resource
              $user = User::create([
                 'national_code' => '11111111',
+                 'user_collection_id' => '84b15c1f-7f0e-411e-9a0c-d5626653b751',
                 'mobile' => 9166666666,
                 'password' => '00000000',
                  'firstname' => 'userResource',
@@ -74,6 +77,7 @@ class UserSeeder extends Seeder
 
              $user = User::create([
                 'national_code' => '2222222222',
+                 'user_collection_id' => '84b15c1f-7f0e-411e-9a0c-d5626653b751',
                 'mobile' => 9167777777,
                 'password' => '00000000',
                  'firstname' => 'bothResource',

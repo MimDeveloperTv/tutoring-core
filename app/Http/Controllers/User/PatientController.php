@@ -62,7 +62,8 @@ class PatientController extends Controller
                 $request->firstname,
                 $request->lastname,
                 $request->birth_date,
-                $request->gender
+                $request->user_collection_id,
+                $request->gender,
             ));
 
             $patient = Patient::whereUserId($user->id)->first();

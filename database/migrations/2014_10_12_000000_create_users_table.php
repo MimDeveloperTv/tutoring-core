@@ -14,6 +14,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
+            $table->string('user_collection_id')->nullable();
             $table->string('national_code')->unique();
             $table->string('email')->unique()->nullable();
             $table->unsignedBigInteger('mobile')->unique();

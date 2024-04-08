@@ -31,7 +31,8 @@ class User extends Authenticatable
         'firstname',
         'lastname',
         'birth_date',
-        'gender'
+        'gender',
+        'user_collection_id'
     ];
 
     /**

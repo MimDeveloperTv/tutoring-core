@@ -17,6 +17,7 @@ class AdminController extends Controller
         DB::beginTransaction();
            try {
             $user = User::create([
+                'user_collection_id' => $request->user_collection_id,
                 'national_code' => $request->national_code,
                 'mobile' => $request->mobile,
                 'email' => $request->email,

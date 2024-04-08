@@ -14,6 +14,7 @@ class UserDTO
         public ?string $firstname,
         public ?string $lastname,
         public ?string $birth_date,
+        public ?string $userCollectionId ,
         public ?string $gender = "FEMALE"
     )
     {
@@ -26,7 +27,8 @@ class UserDTO
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
             'birth_date' => $this->birth_date,
-            'gender' => $this->gender
+            'gender' => $this->gender,
+            'user_collection_id' => $this->userCollectionId
         ];
     }
 
