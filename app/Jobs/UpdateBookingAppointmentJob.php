@@ -22,7 +22,7 @@ class UpdateBookingAppointmentJob implements ShouldQueue
         $response = CustomRequest::put([],[
             'status' => $this->appointment->status,
             'payment_status' => $this->appointment->payment_status
-        ],'booking',"/appointments/".$this->appointment->booking_id);
+        ],'booking',"/appointments/".$this->appointment->id);
         try {
             \Log::debug($response->body()." => ".$response->status());
         }catch (\Exception $exception)

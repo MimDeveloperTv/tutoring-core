@@ -12,7 +12,7 @@ class AppointmentOccurredController extends Controller
     public function newAppointment(Request $request)
     {
         Appointment::create([
-            'booking_id' => $request->input('booking_id'),
+            'id' => $request->input('booking_id'),
             'patient_id' => $request->input('consumer_id'),
             'operator_id' => $request->input('requested_by'),
             'service' => $request->input('service_model')['name'].'-'.$request->input('service_model_item')['label'],

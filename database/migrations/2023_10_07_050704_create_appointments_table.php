@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('appointments', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('booking_id');
             $table->uuid('operator_id');
             $table->foreign('operator_id')->references('id')->on('operators')->onDelete('cascade');
             $table->uuid('patient_id');

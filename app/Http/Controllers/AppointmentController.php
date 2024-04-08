@@ -64,7 +64,6 @@ class AppointmentController extends Controller
             $appointment = Appointment::find($id);
             UpdateBookingAppointmentJob::dispatch(new UpdateAppointmentJobDTO(
                 $appointment->id,
-                $appointment->booking_id,
                 $appointment->status,
                 $appointment->payment_status
             ))->onQueue('default');
@@ -85,7 +84,6 @@ class AppointmentController extends Controller
             $appointment = Appointment::find($id);
             UpdateBookingAppointmentJob::dispatch(new UpdateAppointmentJobDTO(
                 $appointment->id,
-                $appointment->booking_id,
                 $appointment->status,
                 $appointment->payment_status
             ))->onQueue('default');

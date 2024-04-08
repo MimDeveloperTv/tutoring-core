@@ -7,14 +7,12 @@ class UpdateAppointmentJobDTO
     private array $toArray;
     public function __construct(
         public ?string $id,
-        public ?string $booking_id,
         public ?string $status,
         public ?string $payment_status,
     )
     {
         $this->toArray = [
             'national_code' => $this->id,
-            'email' => $this->booking_id,
             'mobile' => $this->status,
             'password' => $this->payment_status,
         ];
