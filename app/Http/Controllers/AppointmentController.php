@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DataTransferObjects\UpdateAppointmentJobDTO;
+use App\Events\OperatorCreatedEvent;
 use App\Http\Requests\Appointment\UpdatePaymentStatusRequest;
 use App\Http\Requests\Appointment\UpdateStatusRequest;
 use App\Http\Resources\ReserveCollection;
@@ -11,6 +12,7 @@ use App\Models\Appointment;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class AppointmentController extends Controller
 {
@@ -51,9 +53,76 @@ class AppointmentController extends Controller
         })->when($request['service_name'],function ($query)use ($request){
             return $query->where('service','LIKE','%'.$request->input('service_name').'%');
         })->orderBy('from', 'desc')->paginate($request->input('pagination') ?? 10);
-        $this->setData(new ReserveCollection($reserves));
-        return $this->response();
+        return new ReserveCollection($reserves);
     }
+
+    public function show(Request $request,$id)
+    {
+        try {
+         $response =  Http::withHeaders([
+                'api_key' => config('microservices.services.core_clinic.api_key'),
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json'
+            ])->get(config('services.booking.base_url') . "/reserves/{$id}", [])
+             ->throw()
+             ->json('data');
+
+            $this->setData($response);
+            return $this->response();
+        }
+        catch (\Exception $exception){
+                $this->setErrors(['errors' => $exception->getMessage()]);
+                $this->setStatus(500);
+                return $this->response();
+            }
+    }
+
+    public function store(Request $request)
+    {
+        try {
+            $response =  Http::withHeaders([
+                'api_key' => config('microservices.services.core_clinic.api_key'),
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+                'X-USER-ID' => $request->header('X-USER-ID')
+            ])->post(config('services.booking.base_url') . "/reserves", $request->all())
+                ->throw()
+                ->json('data');
+
+            $this->setData($response);
+            return $this->response();
+
+        }
+        catch (\Exception $exception){
+            $this->setErrors(['errors' => $exception->getMessage()]);
+            $this->setStatus(500);
+            return $this->response();
+        }
+    }
+    public function slots(Request $request)
+    {
+        try {
+            $response =  Http::withHeaders([
+                'api_key' => config('microservices.services.core_clinic.api_key'),
+                'Accept' => 'application/json',
+                'Content-Type' => 'application/json',
+                'X-USER-ID' => $request->header('X-USER-ID')
+            ])->post(config('services.booking.base_url') . "/reserves/slots", $request->all())
+                ->throw()
+                ->json('data');
+
+            $response = $response == null ? [] : $response;
+            $this->setData($response);
+            return $this->response();
+
+        }
+        catch (\Exception $exception){
+            $this->setErrors(['errors' => $exception->getMessage()]);
+            $this->setStatus(500);
+            return $this->response();
+        }
+    }
+
 
     public function updateStatus(UpdateStatusRequest $request,$id)
     {

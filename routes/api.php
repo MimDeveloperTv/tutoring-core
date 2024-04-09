@@ -25,6 +25,9 @@ Route::get('/personnel',[PersonnelController::class,'index']);
 Route::get('/personnel/{id}',[PersonnelController::class,'show']);
 
 Route::get('reserves',[AppointmentController::class,'index']);
+Route::get('reserves/{id}',[AppointmentController::class,'show']);
+Route::post('reserves',[AppointmentController::class,'store']);
+Route::post('reserves/slots',[AppointmentController::class,'slots']);
 Route::patch('reserves/{id}/payment-status',[AppointmentController::class,'updatePaymentStatus']);
 Route::patch('reserves/{id}/status',[AppointmentController::class,'updateStatus']);
 Route::post('reserves/notification',[AppointmentOccurredController::class,'newAppointment']);

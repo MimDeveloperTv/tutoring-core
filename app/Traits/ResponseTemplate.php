@@ -14,7 +14,7 @@ trait ResponseTemplate
 
     public function setData($data) : void
     {
-        $this->data = $data; 
+        $this->data = $data;
     }
 
     public function setErrors($errors) : void
@@ -24,7 +24,7 @@ trait ResponseTemplate
 
     public function response(string $platform = 'web') : object
     {
-       
+
         switch ($platform) {
             case 'app':
                 return response()->json(['data' => $this->data,'errors' => $this->errors,'status' => $this->status],$this->status);
