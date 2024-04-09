@@ -13,6 +13,7 @@ use App\Http\Controllers\User\UserOperatorController;
 use App\Http\Controllers\Patient\MedicalHistoryController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\AppointmentOccurredController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -36,26 +37,19 @@ Route::get('/get-domain-connection', [ConnectionController::class,'getConnection
 
 Route::get('dashboard',[DashboardController::class,'index']);
 
-
-
 Route::get('/personnel',[PersonnelController::class,'index']);
 Route::get('/personnel/{id}',[PersonnelController::class,'show']);
 
-
-Route::get('user/{id}/patient',[UserPatientController::class,'show']);
-
 Route::apiResource('patients', PatientController::class);
+Route::get('user/{id}/patient',[UserPatientController::class,'show']);
 Route::post('user/{id}/patient',[UserPatientController::class,'store']);
-
-
 Route::get('user/{id}/operator',[UserOperatorController::class,'show']);
 Route::post('user/{id}/operator',[UserOperatorController::class,'store']);
 
 Route::get('reserves',[AppointmentController::class,'index']);
-
-
 Route::patch('reserves/{id}/payment-status',[AppointmentController::class,'updatePaymentStatus']);
 Route::patch('reserves/{id}/status',[AppointmentController::class,'updateStatus']);
+Route::post('reserves/notification',[AppointmentOccurredController::class,'newAppointment']);
 
 Route::group(['prefix' => 'operators'], function () {
     Route::get('/', [OperatorController::class, 'index']);
@@ -67,27 +61,9 @@ Route::get('planning-errors',[\App\Http\Controllers\Planning\PlanningController:
 Route::get('surgery-form-data',[\App\Http\Controllers\Surgery\SurgeryController::class,'getSurgeryFormData']);
 Route::get('diagnosis-data',[\App\Http\Controllers\DiagnosisController::class,'index']);
 
-Route::post('new-reservation-occurred',[\App\Http\Controllers\AppointmentOccurredController::class,'newAppointment']);
-
 Route::get('medical-forms',[MedicalFormController::class,'index']);
 Route::get('medical-forms/{id}',[MedicalFormController::class,'show']);
 Route::put('medical-forms/{id}',[MedicalFormController::class,'submit']);
 Route::patch('medical-forms/{id}',[MedicalFormController::class,'draft']);
 Route::post('upload-medicine-files',[\App\Http\Controllers\Imaging\FileUploaderController::class,'store']);
-
-//  Route::post('operators',function(Request $request){
-//     $user = User::create([
-//         'national_code' => $request->national_code,
-//         'email' => $request->email,
-//         'mobile' => $request->mobile,
-//         'password' => $request->password,
-//     ]);
-
-//      $operator = $user->resource()->create([
-//          'firstname' => $request->firstname,
-//          'lastname' => $request->lastname
-//      ]);
-//      new OperatorCreatedEvent($operator->id);
-//      return $operator;
-//  });
 
