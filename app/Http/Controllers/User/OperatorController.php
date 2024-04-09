@@ -47,16 +47,6 @@ class OperatorController extends Controller
 
     public function store(Request $request)
     {
-//        $request->validate([
-//            'national_code' => 'required',
-//            'mobile' => 'required',
-//            'email' => 'required',
-//            'password' => 'required',
-//            'firstname' => 'required',
-//            'lastname' => 'required',
-//            'avatar' => 'required'
-//        ]);
-
         try {
             $user = $this->userService->findOrCreateByNationalCode(new UserDTO(
                 $request->national_code,
@@ -70,6 +60,8 @@ class OperatorController extends Controller
                 $request->user_collection_id
             ));
 
+            $user_collection_id = $user->user_collection_id;
+
             $operator = Operator::where('user_id', $user->id)->first();
             if ($operator) {
                 $this->setData(new OperatorResource($operator));
@@ -81,7 +73,7 @@ class OperatorController extends Controller
             ], [
                 'fullname' => $user->firstname . " " . $user->lastname,
                 'user_id' => $user->id
-            ], 'booking', '/collections/operators');
+            ], 'booking', "collection/{$user_collection_id}/operators");
         } catch (\Throwable $th) {
             $this->setStatus(400);
             $this->setErrors($th->getMessage());

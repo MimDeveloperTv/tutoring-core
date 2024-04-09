@@ -14,7 +14,8 @@ class OperatorService
     public function new($user_id) : ?Operator
     {
         $user = User::find($user_id);
-        if ($user && $operator_id = $this->createNewBookingOperator($user->id,$user->firstname." ".$user->lastname)) {
+        $fullname = $user->firstname." ".$user->lastname;
+        if ($user && $operator_id = $this->createNewBookingOperator($user->id,$fullname,$user->user_collection_id)) {
             $booking_operator_id = $operator_id;
             return Operator::create([
                 'id' => $booking_operator_id,
@@ -25,15 +26,16 @@ class OperatorService
         }
     }
 
-    public function createNewBookingOperator($user_id,$fullname) : ?string
+    public function createNewBookingOperator($user_id,$fullname,$user_collection_id) : ?string
     {
         try {
             $booking_operator_response = CustomRequest::post([
                 'api_key' => config("services.iam.api_key"),
             ],[
                 'fullname' => $fullname,
-                'user_id' => $user_id
-            ], 'booking', '/collections/operators');
+                'user_id' => $user_id,
+
+            ], 'booking', "collection/{$user_collection_id}/operators");
         } catch (\Throwable $th) {
             $this->errors_push($th->getMessage());
             return 0;

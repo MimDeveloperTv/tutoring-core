@@ -51,8 +51,6 @@ class PatientController extends Controller
 
     public function store(PatientRequest $request)
     {
-
-        // try {
             $user = $this->userService->findOrCreateByNationalCode(new UserDTO(
                 $request->national_code,
                 $request->email,
@@ -66,31 +64,20 @@ class PatientController extends Controller
                 $request->gender,
             ));
 
+        $user_collection_id = $user->user_collection_id;
+
             $patient = Patient::whereUserId($user->id)->first();
             if ($patient) {
                 $this->setData(new PatientResource($patient));
                 return $this->response();
             }
 
-//                $this->setErrors([
-//                    'national_code' => 'A patient with this national ID has already been registered'
-//                ]);
-
-
-
             $booking_patient_response = CustomRequest::post([
                 'api-key' => config("services.iam.api_key"),
             ], [
                 'user_id' => $user->id,
                 'fullname' => $user->firstname . " " . $user->lastname,
-            ], 'booking', '/collections/consumers');
-
-        Log::debug($booking_patient_response->body());
-        // } catch (\Throwable $th) {
-        //     $this->setStatus(400);
-        //     $this->setErrors($th->getMessage());
-        //     return $this->response();
-        // }
+            ], 'booking', "collection/{$user_collection_id}/operators");
 
         $this->setStatus($booking_patient_response->status());
         if ($booking_patient_response->status() == 201) {
@@ -123,15 +110,6 @@ class PatientController extends Controller
                 $this->setErrors(['code' => 'core-clinic : patientController : code : 78958641', 'error' => $booking_patient_response]);
             }
         }
-
-        // $patient = DB::transaction(fn() => User::create([
-        //     'mobile' => $request->input('mobile'),
-        //     'email' => $request->input('email'),
-        //     'password' => Hash::make($request->input('password', $request->input('national_code'))),
-        //     'national_code' => $request->input('national_code'),
-        // ])->patient()->create(
-        //     $request->validated()
-        // ));
 
         return $this->response();
     }

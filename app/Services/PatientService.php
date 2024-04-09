@@ -15,7 +15,8 @@ class PatientService
      public function new($user_id) : ?Patient
      {
          $user = User::find($user_id);
-         if ($user && $consumer_id = $this->createNewBookingConsumer($user->id,$user->firstname." ".$user->lastname)) {
+         $fullname = $user->firstname." ".$user->lastname;
+         if ($user && $consumer_id = $this->createNewBookingConsumer($user->id,$fullname,$user->user_collection_id)) {
              $booking_patient_id = $consumer_id;
                  return Patient::create([
                      'id' => $booking_patient_id,
@@ -26,7 +27,7 @@ class PatientService
          }
      }
 
-     public function createNewBookingConsumer($user_id,$fullname) : ?string
+     public function createNewBookingConsumer($user_id,$fullname,$user_collection_id) : ?string
      {
          try {
              $booking_patient_response = CustomRequest::post([
@@ -34,7 +35,7 @@ class PatientService
              ],[
                 'user_id' => $user_id,
              'fullname' => $fullname,
-         ], 'booking', '/collections/consumers');
+         ], 'booking', "collection/{$user_collection_id}/consumers");
          } catch (\Throwable $th) {
           $this->errors_push($th->getMessage());
           return 0;
