@@ -51,11 +51,11 @@ Route::post('user/{id}/patient',[UserPatientController::class,'store']);
 Route::get('user/{id}/operator',[UserOperatorController::class,'show']);
 Route::post('user/{id}/operator',[UserOperatorController::class,'store']);
 
-Route::get('appointments',[AppointmentController::class,'index']);
+Route::get('reserves',[AppointmentController::class,'index']);
 
 
-Route::patch('appointments/{id}/payment-status',[AppointmentController::class,'updatePaymentStatus']);
-Route::patch('appointments/{id}/status',[AppointmentController::class,'updateStatus']);
+Route::patch('reserves/{id}/payment-status',[AppointmentController::class,'updatePaymentStatus']);
+Route::patch('reserves/{id}/status',[AppointmentController::class,'updateStatus']);
 
 Route::group(['prefix' => 'operators'], function () {
     Route::get('/', [OperatorController::class, 'index']);
